@@ -45,7 +45,7 @@
             return arr;
         }
   
-        //chia modulo voi bigint duong
+        //binh phuong va nhan
         function expmod(alpha, a, p){
             var arr = binaryNum(a);
             var beta = alpha%p;
@@ -86,8 +86,7 @@
             arrBanMa = []
             var c1, c2,k;
             for(var index = 0 ; index < arrBanRoUni.length; index ++){
-                // tạo k ngẫu nhiên <p với mỗi kí tự trong chuỗi
-                k = 50;//Math.floor(Math.random()*p +1);
+                k = Math.floor(Math.random()*p +1);
                 c1 = expmod(alpha, k,p);
                 c2 = (arrBanRoUni[index] * expmod(beta,k,p)) %p;
                 arrBanMa.push(c1,c2);
@@ -123,11 +122,11 @@
                i+=2;
             }
             var giaiMa = convertString(ArrgiaiMa).join(''); 
-            return arrBanMaString;
+            return giaiMa;
         }
         //button giai ma
         function button_GiaiMa(){
-            document.getElementById("giaiMa_banRo").innerHTML = expmod(25,260-1-58,260);
+            document.getElementById("giaiMa_banRo").innerHTML = GiaiMa() ;
         }
 
 
