@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>He ma Elgamel</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!-- link bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- style  -->
+    <style>
+        .container{
+            background:rgb(182, 183, 182,0.5);
+            border: 1px solid black;
+            padding: 20px;
+        }
+        .col-lg-4{
+            border: 1px solid black;
+            border-right: 0px;
+            height: 400px;
+        }
+        .input{
+            width: 100px; 
+
+        }
+        .text{
+            
+        }
+        .button{
+            text-align: center;
+        }
+    </style>
+
+
+    <!-- javascrip -->
+    <script>
+        //mang nhi phan 1 so
+        function binaryNum(a){
+            var arr = [];
+            while (a > 0){
+                arr.push(a%2);
+                a = Math.floor(a/2);
+            }
+            return arr;
+        }
+  
+        //chia modulo voi bigint duong
+        function expmod(alpha, a, p){
+            var arr = binaryNum(a);
+            var beta = alpha%p;
+            var c ;
+            for(var i = arr.length-2 ; i >= 0 ; i--){
+                if(arr[i] == 0){
+                    c = (beta*beta) %p;
+                }
+                else{
+                    c = (beta *beta * alpha)%p;
+                }
+                beta = c;
+            }
+            return c;
+        }
+        //chuyen mang kí tự sang mảng unicode
+        function convertUni(arrInput){
+            arrUni = [];
+            for(var index = 0; index < arrInput.length; index++)
+                arrUni.push(arrInput.charCodeAt(index));
+            return arrUni;
+        }
+        //chuyen mang sang string
+        function convertString(arrOut){
+            arrString = [];
+            for(var index = 0; index < arrOut.length; index++)
+                arrString.push(String.fromCharCode(arrOut[index]));
+            return arrString;
+        }
+        //hàm mã hóa
+        function MaHoa(){
+            var p = document.getElementById("p").value;
+            var alpha = document.getElementById("alpha").value;
+            var a = document.getElementById("a").value;
+            var banRo = document.getElementById("maHoa_banRo").value;
+            var beta = expmod(alpha,a,p);
+            arrBanRoUni = convertUni(banRo);
+            arrBanMa = []
+            var c1, c2,k;
+            for(var index = 0 ; index < arrBanRoUni.length; index ++){
+                // tạo k ngẫu nhiên <p với mỗi kí tự trong chuỗi
+                k = 50;//Math.floor(Math.random()*p +1);
+                c1 = expmod(alpha, k,p);
+                c2 = (arrBanRoUni[index] * expmod(beta,k,p)) %p;
+                arrBanMa.push(c1,c2);
+            }
+            //ban ma
+            var banMa = [];
+            banMa = convertString(arrBanMa).join('');
+            return banMa;
+            document.getElementById("beta").value = 1;
+        }
+  
+
+        //button ma hoa
+        function button_MaHoa(){   
+
+        //kiem tra o trong
+           // if(p == "" || alpha == "" || beta == "" || banRo =="")
+             //   alert(" khong duoc bo trong");
+            
+            //xuat ban ma
+            document.getElementById("maHoa_banMa").innerHTML = MaHoa();
+        }
+        // ham giai ma
+        function GiaiMa(){
+            var p = document.getElementById("p").value;
+            var a = document.getElementById("a").value;
+            var c = document.getElementById("giaiMa_banMa").value;
+            var arrBanMaString = convertUni(c);
+            var ArrgiaiMa = [];
+            for(var i = 0; i < arrBanMa.length; ){
+               var m = (expmod(arrBanMa[i], p-1-a,p) *(arrBanMa[i+1])%p )%p;
+               ArrgiaiMa.push(m);
+               i+=2;
+            }
+            var giaiMa = convertString(ArrgiaiMa).join(''); 
+            return arrBanMaString;
+        }
+        //button giai ma
+        function button_GiaiMa(){
+            document.getElementById("giaiMa_banRo").innerHTML = expmod(25,260-1-58,260);
+        }
+
+
+
+    </script>
+
+</head>
+
+<body>
+    <p>B1 : Nhập p, alpha,beta</p>
+
+    <div class="container" >
+        
+        <div class="row">
+          <div class="col-lg-4">
+            <p class="text">p:<input type="text" class="input" id="p" > </p> 
+            <h5>Khóa công khai:</h5>
+            
+            <p>Alpha:<input type="text" class="input" id="alpha" > </p>
+            <h5>Khóa bí mật:</h5>    
+            <p>a:<input type="text" class="input" id="a" > </p>
+            <button class="btn btn-sm btn-outline-dark">Tạo khóa công khai</button>           
+            <p>Beta: <input type="text" class="input" id="beta" ></p>
+        </div>
+
+        <div class="col-lg-4">
+            <h4>Mã Hóa</h4>
+            <h5>Bản rõ</h5>
+            <textarea name="" id="maHoa_banRo" cols="34" rows="5"></textarea>
+            <button onclick="button_MaHoa()" >Mã hóa</button> 
+            <button>Xóa bản rõ</button> 
+            <h5>Bản mã</h5>
+            <textarea name="" id="maHoa_banMa" cols="34" rows="5"></textarea>
+        </div>
+        
+        <div class="col-lg-4">
+            <h4>Giải mã</h4>
+            <h5>Bản mã</h5>
+            <textarea name="" id="giaiMa_banMa" cols="34" rows="5"></textarea>
+            <button onclick="button_GiaiMa()">Giải mã</button> 
+            <button>Xóa bản rõ</button> 
+            <h5>Bản rõ</h5>
+            <textarea name="" id="giaiMa_banRo" cols="34" rows="5"></textarea>
+        </div>
+          
+        </div>
+      </div>
+</body>
+</html>
