@@ -15,26 +15,46 @@
             border: 1px solid black;
             padding: 20px;
         }
+        .row{
+            margin-top: 10px;
+        }
         .col-lg-4{
-            border: 1px solid black;
+            border: px solid black;
             border-right: 0px;
             height: 400px;
+        }
+        .col-xs-6{
+            margin-left: 20px;
         }
         .input{
             width: 100px; 
 
         }
-        .text{
-            
+        .text-center p{
+            margin-bottom: 5px;
         }
         .button{
             text-align: center;
+        }
+        .allert{
+            margin: -10px 0 0 65px;
+            color: red;
         }
     </style>
 
 
     <!-- javascrip -->
     <script>
+        // check so nguyen to
+        function IsPrime(a){
+            if(a < 2)
+                return false;
+            var s = Math.floor(Math.sqrt(a));
+            for(var i = 2; i <= s;i++)
+                if(a % i == 0)
+                    return false;
+            return true;
+        }
         //mang nhi phan 1 so
         function binaryNum(a){
             var arr = [];
@@ -61,6 +81,31 @@
             }
             return c;
         }
+        // tim modulo nghich dao
+        function Inverse(b,a){
+            var d,q,r,x,x1,x2,y1,y2;
+            if(b == 0){
+                d = a;
+                x = 1;
+                y = 0;
+            }
+            else{
+                x2 =1, x1 = 0;y2 =0;y1 =1;
+                while(b > 0){
+                    q = Math.floor(a/b);
+                    r = a - q*b;
+                    x = x2 - q*x1;
+                    y = y2 - q*y1;
+                    a =b,b =r, x2 =x1,x1=x,y2=y1,y1 =y;
+                }
+                d =a; x =x2 ;y =y2; 
+            }
+            if(y < 0)
+                y = b+ y;
+
+            return y;
+        }
+   
         //chuyen mang kí tự sang mảng unicode
         function convertUni(arrInput){
             arrUni = [];
@@ -95,20 +140,8 @@
             var banMa = [];
             banMa = convertString(arrBanMa).join('');
             return banMa;
-            document.getElementById("beta").value = 1;
         }
-  
 
-        //button ma hoa
-        function button_MaHoa(){   
-
-        //kiem tra o trong
-           // if(p == "" || alpha == "" || beta == "" || banRo =="")
-             //   alert(" khong duoc bo trong");
-            
-            //xuat ban ma
-            document.getElementById("maHoa_banMa").innerHTML = MaHoa();
-        }
         // ham giai ma
         function GiaiMa(){
             var p = document.getElementById("p").value;
@@ -117,47 +150,127 @@
             var arrBanMaString = convertUni(c);
             var ArrgiaiMa = [];
             for(var i = 0; i < arrBanMa.length; ){
-               var m = (expmod(arrBanMa[i], p-1-a,p) *(arrBanMa[i+1])%p )%p;
-               ArrgiaiMa.push(m);
-               i+=2;
+                //var k =expmod(arrBanMa[i],a,p);
+                //var m = (Inverse(k,p) *arrBanMa[i+1])%p;
+                var m = (expmod(arrBanMa[i],p-1-a,p) *(arrBanMa[i+1])%p )%p;
+                ArrgiaiMa.push(m);
+                i+=2;
             }
             var giaiMa = convertString(ArrgiaiMa).join(''); 
             return giaiMa;
         }
+        // button tao khao cong khai
+        function create_key(){
+            var p = document.getElementById("p").value;
+            var alpha = document.getElementById("alpha").value;
+            var a = document.getElementById("a").value;
+            document.getElementById("beta").value = expmod(alpha,a,p);
+        }
+        //button ma hoa
+        function button_MaHoa(){   
+            var p = document.getElementById("p").value;
+            var alpha = document.getElementById("alpha").value;
+            var a = document.getElementById("a").value;
+            //check_input();
+            
+            //xuat ban ma
+            document.getElementById("beta").value = expmod(alpha,a,p);
+            document.getElementById("maHoa_banMa").value = MaHoa();
+        }
+
         //button giai ma
         function button_GiaiMa(){
             document.getElementById("giaiMa_banRo").innerHTML = GiaiMa() ;
         }
-
-
-
+        // button delete
+        function button_XoaBanRo(){
+            document.getElementById("maHoa_banRo").value = "";
+        }
+        function button_XoaBanMa(){
+            document.getElementById("giaiMa_banMa").value = "";
+        }
+        // button copy
+        function copy_banMa(){
+            var s = document.getElementById("maHoa_banMa").value;
+            document.getElementById("giaiMa_banMa").value = s;
+        }
+        // check input
+        function check_input(){
+            var p = document.getElementById("p").value;
+            var alpha = document.getElementById("alpha").value;
+            var a = document.getElementById("a").value;
+            var patt =/^[0-9]$/;//regex
+            // check p
+            if( p == ""){
+                document.getElementById("allert_p").innerText = "Khong duoc bo trong";
+            }
+            else{
+                if(patt.test("p")){
+                    if(IsPrime(p) == 0){
+                        document.getElementById("p").value ="";
+                        document.getElementById("allert_p").innerText ="p khong la so nguyen to";
+                    }
+                    else
+                        document.getElementById("allert_p").innerText ="";
+                }
+                else{
+                    document.getElementById("p").value ="";
+                        document.getElementById("allert_p").innerText ="nhap lai gia tri ";
+                }
+            }
+            //check alpha
+            if(alpha == ""){
+                document.getElementById("allert_alpha").innerText = "Khong duoc bo trong";
+            }    
+        }
     </script>
 
 </head>
 
 <body>
-    <p>B1 : Nhập p, alpha,beta</p>
+    <div class="text-center">
+        <p> B1 : Nhập p, alpha,beta</p>
+        <p>B2 : Tao Khóa công khai</p>
+        <p>B3 : Nhập Giá trị muốn giải mã || Mã hóa</p>
+        <p>B4 : Giải mã || Mã Hóa</p>
+    </div>
+
 
     <div class="container" >
-        
         <div class="row">
-          <div class="col-lg-4">
-            <p class="text">p:<input type="text" class="input" id="p" > </p> 
+          <div class="col-lg-4" style="border-right: 1px solid black">
             <h5>Khóa công khai:</h5>
-            
-            <p>Alpha:<input type="text" class="input" id="alpha" > </p>
-            <h5>Khóa bí mật:</h5>    
-            <p>a:<input type="text" class="input" id="a" > </p>
-            <button class="btn btn-sm btn-outline-dark">Tạo khóa công khai</button>           
-            <p>Beta: <input type="text" class="input" id="beta" ></p>
+            <div class="row">
+                <div class="col-xs-6" style="width: 40px;"><p>p:</p> </div>
+                <div class="col-xs-6"><input type="text" class="align-seft-sm-end" id="p" ></div>
+            </div> 
+            <p class="allert" id ="allert_p"></p>
+            <div class="row">
+                <div class="col-xs-6" style="width: 40px;"><p>Alpha:</p> </div>
+                <div class="col-xs-6"><input  type="text" class="align-seft-sm-end" id="alpha" ></div>
+            </div> 
+            <p class="allert" id="allert_alpha"></p>
+            <h5>Khóa bí mật:</h5> 
+            <div class="row">
+                <div class="col-xs-6" style="width: 40px;"><p>a:</p> </div>
+                <div class="col-xs-6"><input type="text" class="align-seft-sm-end" id="a" ></div>
+            </div>   
+            <button onclick="create_key()" class="btn btn-sm btn-outline-dark" style="margin-left: 70px;">Tạo khóa công khai</button>           
+            <div class="row">
+                <div class="col-xs-6" style="width: 40px;"><p>Beta:</p> </div>
+                <div class="col-xs-6"><input type="text" class="align-seft-sm-end" id="beta" ></div>
+            </div> 
         </div>
 
-        <div class="col-lg-4">
+        <div class="col-lg-4" style="border-right: 1px solid black">
             <h4>Mã Hóa</h4>
             <h5>Bản rõ</h5>
             <textarea name="" id="maHoa_banRo" cols="34" rows="5"></textarea>
-            <button onclick="button_MaHoa()" >Mã hóa</button> 
-            <button>Xóa bản rõ</button> 
+            <div class="col-sm" style="margin-left: -7px;">
+                <button class="btn btn-sm btn-outline-dark" onclick="button_MaHoa()" >Mã hóa</button> 
+                <button class="btn btn-sm btn-outline-dark" onclick="button_XoaBanRo()">Xóa bản rõ</button> 
+                <button class="btn btn-sm btn-outline-dark" onclick="copy_banMa()">Copy Bản Mã</button>
+            </div>
             <h5>Bản mã</h5>
             <textarea name="" id="maHoa_banMa" cols="34" rows="5"></textarea>
         </div>
@@ -166,8 +279,10 @@
             <h4>Giải mã</h4>
             <h5>Bản mã</h5>
             <textarea name="" id="giaiMa_banMa" cols="34" rows="5"></textarea>
-            <button onclick="button_GiaiMa()">Giải mã</button> 
-            <button>Xóa bản rõ</button> 
+            <div class="col-sm" style="margin-left: 60px;">
+                <button class="btn btn-sm btn-outline-dark" onclick="button_GiaiMa()">Giải mã</button> 
+                <button class="btn btn-sm btn-outline-dark" onclick="button_XoaBanMa()">Xóa bản mã</button> 
+            </div>
             <h5>Bản rõ</h5>
             <textarea name="" id="giaiMa_banRo" cols="34" rows="5"></textarea>
         </div>
