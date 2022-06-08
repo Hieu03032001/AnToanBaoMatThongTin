@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>He ma Elgamel</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+    <!-- link bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!-- style  -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- java script -->
+    <script src="index.js"></script>
+
+</head>
+
+<body>
+    <div class="text-center">
+        <p> B1 : Nhập p:62989, alpha,beta</p>
+        <p>B2 : Tao Khóa công khai</p>
+        <p>B3 : Nhập Giá trị muốn giải mã || Mã hóa</p>
+        <p>B4 : Giải mã || Mã Hóa</p>
+    </div>
+
+
+    <div class="container" >
+        <div class="row">
+          <div class="col-lg-4" style="border-right: 1px solid black">
+            <h5>Khóa công khai:</h5>
+            <div class="row">
+                <div class="col-xs-6" style="width: 40px;"><p>p:</p> </div>
+                <div class="col-xs-6"><input type="text" class="align-seft-sm-end" id="p" ></div>
+            </div> 
+            <p class="allert" id ="allert_p"></p>
+            <div class="row">
+                <div class="col-xs-6" style="width: 40px;"><p>Alpha:</p> </div>
+                <div class="col-xs-6"><input  type="text" class="align-seft-sm-end" id="alpha" ></div>
+            </div> 
+            <p class="allert" id="allert_alpha"></p>
+            <h5>Khóa bí mật:</h5> 
+            <div class="row">
+                <div class="col-xs-6" style="width: 40px;"><p>a:</p> </div>
+                <div class="col-xs-6"><input type="text" class="align-seft-sm-end" id="a" ></div>
+            </div>
+            <p class="allert" id ="allert_a"></p>   
+            <button onclick="create_key()" class="btn btn-sm btn-outline-dark mt-2" style="margin-left: 70px;">Tạo khóa công khai</button>           
+            <div class="row">
+                <div class="col-xs-6" style="width: 40px;"><p>Beta:</p> </div>
+                <div class="col-xs-6"><input type="text" class="align-seft-sm-end" id="beta" ></div>
+            </div> 
+        </div>
+
+        <div class="col-lg-4" style="border-right: 1px solid black">
+            <h4>Mã Hóa</h4>
+            <h5>Bản rõ</h5>
+            <textarea name="" id="maHoa_banRo" cols="34" rows="5"></textarea>
+            <div class="col-sm" style="margin-left: -7px;">
+                <button class="btn btn-sm btn-outline-dark" onclick="button_MaHoa()" >Mã hóa</button> 
+                <button class="btn btn-sm btn-outline-dark" onclick="button_XoaBanRo()">Xóa bản rõ</button> 
+                <button class="btn btn-sm btn-outline-dark" onclick="copy_banMa()">Copy Bản Mã</button>
+            </div>
+            <h5>Bản mã</h5>
+            <textarea name="" id="maHoa_banMa" cols="34" rows="5"></textarea>
+        </div>
+        
+        <div class="col-lg-4">
+            <h4>Giải mã</h4>
+            <h5>Bản mã</h5>
+            <textarea name="" id="giaiMa_banMa" cols="34" rows="5"></textarea>
+            <div class="col-sm" style="margin-left: 60px;">
+                <button class="btn btn-sm btn-outline-dark" onclick="button_GiaiMa()">Giải mã</button> 
+                <button class="btn btn-sm btn-outline-dark" onclick="button_XoaBanMa()">Xóa bản mã</button> 
+            </div>
+            <h5>Bản rõ</h5>
+            <textarea name="" id="giaiMa_banRo" cols="34" rows="5"></textarea>
+        </div>
+          
+        </div>
+      </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+.container{
+    background:rgb(182, 183, 182,0.5);
+    border: 1px solid black;
+    padding: 20px;
+}
+.row{
+    margin-top: 10px;
+}
+.col-lg-4{
+    border: px solid black;
+    border-right: 0px;
+    height: auto;
+}
+.col-xs-6{
+    margin-left: 20px;
+}
+.input{
+    width: 100px; 
+
+}
+.text-center p{
+    margin-bottom: 5px;
+}
+.button{
+    text-align: center;
+}
+.allert{
+    margin: -10px 0 0 65px;
+    color: red;
+}
