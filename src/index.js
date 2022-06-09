@@ -169,6 +169,7 @@ function check_input(){
     var patt =/[^0-9]/;//regex
 
     // ----------------check p----------------------------------
+    if(p == ""){
         document.getElementById("allert_p").innerText = "Khong duoc bo trong";
     }
     else{
@@ -197,7 +198,7 @@ function check_input(){
     }
     else{
         if(patt.test(p) == false){
-            if(0<alpha || alpha> p){
+            if(alpha> p){
                 document.getElementById("alpha").value ="";
                 document.getElementById("allert_alpha").innerText ="alpha nho hon p";
             }
@@ -220,7 +221,7 @@ function check_input(){
     }
     else{
         if(patt.test(p) == false){
-            if(0<alpha || alpha> p-1){
+            if(alpha> p-1){
                 document.getElementById("alpha").value ="";
                 document.getElementById("allert_a").innerText ="a nho hon p-1";
             }
@@ -233,6 +234,29 @@ function check_input(){
             document.getElementById("allert_a").innerText ="nhap lai so a";
         }
     }
+}
     //-----------end check a----------------------------------------------
 
-    //-------------------------END button---------------------------------------------
+    //-------------------------END button--------------------------------------------
+    
+
+//---------------------- read fie----------------------------------------------------
+function readfileEncry(event){
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById("maHoa_banRo").innerHTML = e.target.result;
+    };
+    reader.readAsText(file);
+}
+
+function readfileDecry(event){
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById("giaiMa_banMa").innerHTML = e.target.result;
+    };
+    reader.readAsText(file);
+}
+
+
